@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2003-2010 Linuxant inc.
- * Copyright (c) 2001-2010 Conexant Systems, Inc.
+ * Copyright (c) 2003-2004 Linuxant inc.
+ * Copyright (c) 2001-2004 Conexant Systems, Inc.
  * 
  * 1.   Permitted use. Redistribution and use in source and binary forms,
  * without modification, are only permitted under the terms set forth herein.
