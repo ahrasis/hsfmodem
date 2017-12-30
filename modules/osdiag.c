@@ -30,11 +30,7 @@
 #define DIAG_NOTIFY_RINGBUF_ELEMENTS 100
 
 static struct list_head diag_instance_list = LIST_HEAD_INIT(diag_instance_list);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)
 static DEFINE_SPINLOCK(diag_lock);
-#else
-static spinlock_t diag_lock = SPIN_LOCK_UNLOCKED;
-#endif
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,2)
 #ifdef FOUND_CLASS_SIMPLE
 static struct class_simple *diag_class;
@@ -603,9 +599,7 @@ COM_STATUS OsDiagMgrClose(HANDLE hOsDiagMgr)
 
 static struct file_operations diag_fops = {
     .owner	= THIS_MODULE,
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 36)
-    .ioctl	= diag_ioctl,
-#endif
+	.compat_ioctl = diag_ioctl,
     .fasync	= diag_fasync,
     .poll	= diag_poll,
     .read	= diag_read,
