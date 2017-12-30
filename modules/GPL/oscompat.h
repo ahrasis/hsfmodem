@@ -122,9 +122,7 @@ static int errno;
 #include <linux/spinlock.h>
 #include <linux/list.h>
 #include <asm/bitops.h>
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)
 #include <asm/system.h>
-#endif
 
 /*
  * New proposed "bottom half" handlers:
@@ -199,10 +197,8 @@ extern task_queue tq_timer, tq_immediate, tq_disk;
  * interrupt.
  */
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)
+#ifdef STATIC_TQUEUE_LOCK
 static DEFINE_SPINLOCK(tqueue_lock);
-#elif defined(STATIC_TQUEUE_LOCK)
-static spinlock_t tqueue_lock __attribute__((unused)) = SPIN_LOCK_UNLOCKED;
 #else
 extern spinlock_t tqueue_lock;
 #endif
@@ -630,11 +626,7 @@ typedef u32 pm_message_t;
 #endif
 
 #ifdef FOUND_TOUCH_ATIME
-#if ( LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0) )
-#define TOUCH_ATIME(file) touch_atime(&(file)->f_path);
-#else
 #define TOUCH_ATIME(file) touch_atime((file)->f_vfsmnt,(file)->f_dentry);
-#endif
 #else
 #define TOUCH_ATIME(file) update_atime((file)->f_dentry->d_inode);
 #endif
